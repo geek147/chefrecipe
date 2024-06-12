@@ -16,7 +16,7 @@ class RecipeDatasourceImpl implements RecipeDatasource {
   Future<RecipeModel> getRecipeFromApi() async {
     try {
       Response response;
-      response = await dio.get(RestApiUrls.randomJoke);
+      response = await dio.get(RestApiUrls.recipeUrl);
       if (response.statusCode != 200) {
         throw ExceptionUtils.dioStatusCodeErrorHandle(response.statusCode);
       } else {

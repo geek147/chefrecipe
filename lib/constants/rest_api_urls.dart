@@ -4,8 +4,8 @@ class RestApiUrls {
   RestApiUrls._();
 
   static const String baseUrl = '';
-  static const String jokeApiServerKey = '';
-  static const String randomJoke = 'https://api.chucknorris.io/jokes/random';
+  static const String recipeApiServerKey = '';
+  static const String recipeUrl = 'https://api.edamam.com/api/recipes/v2';
 
   static BaseOptions baseOptions = BaseOptions(
     baseUrl: baseUrl,

@@ -25,15 +25,4 @@ class RecipeRepositoryImpl implements RecipeRepository {
       return left(UnexpectedFailure());
     }
   }
-
-  @override
-  Future<Either<Failure, RecipeModel>> searchRecipeByImage(String imagePath) {
-    throw UnimplementedError();
-  }
-
-  @override
-  Future<Either<Failure, RecipeModel>> searchRecipeByIngredients(
-      List<String> ingredients) {
-    throw UnimplementedError();
-  }
 }

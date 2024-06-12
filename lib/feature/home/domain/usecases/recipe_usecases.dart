@@ -12,16 +12,4 @@ class RecipeUseCases {
     await Future.delayed(const Duration(seconds: 1));
     return recipeRepository.getRecipeFromUrl();
   }
-
-  Future<Either<Failure, RecipeModel>> searchRecipeByImage(
-      String imagePath) async {
-    await Future.delayed(const Duration(seconds: 1));
-    return recipeRepository.searchRecipeByImage(imagePath);
-  }
-
-  Future<Either<Failure, RecipeModel>> searchRecipeByIngredients(
-      List<String> ingredients) async {
-    await Future.delayed(const Duration(seconds: 1));
-    return recipeRepository.searchRecipeByIngredients(ingredients);
-  }
 }

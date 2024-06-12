@@ -1,4 +1,5 @@
-import 'package:chefrecipe/feature/home/presentation/pages/page.dart';
+import 'package:chefrecipe/core/utils/env.dart';
+import 'package:chefrecipe/feature/mainpage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -9,8 +10,8 @@ import 'package:flutter_gemini/flutter_gemini.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await di.init();
-  Gemini.init(
-      apiKey: const String.fromEnvironment('apiKey'), enableDebugging: true);
+  // gemini init
+  Gemini.init(apiKey: Env.apiKey, enableDebugging: true);
   runApp(const ProviderScope(child: MainApp()));
 }
 
@@ -24,7 +25,7 @@ class MainApp extends StatelessWidget {
         debugShowCheckedModeBanner: false,
         title: 'Chef Recipe',
         theme: AppTheme.lightTheme,
-        home: const HomePage(),
+        home: const MainPage(),
       ),
     );
   }
