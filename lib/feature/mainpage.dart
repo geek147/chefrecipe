@@ -33,8 +33,8 @@ class _MainPageState extends State<MainPage> {
             label: 'Home',
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.search),
-            label: 'Search',
+            icon: Icon(Icons.air_outlined),
+            label: 'AI Search',
           ),
         ],
         currentIndex: _selectedIndex,

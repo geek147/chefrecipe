@@ -8,8 +8,8 @@ class RecipeUseCases {
 
   const RecipeUseCases({required this.recipeRepository});
 
-  Future<Either<Failure, RecipeModel>> getRecipeFromUrl() async {
-    await Future.delayed(const Duration(seconds: 1));
-    return recipeRepository.getRecipeFromUrl();
+  Future<Either<Failure, RecipeModel?>> getRecipeFromUrl(String query) async {
+    final result = await recipeRepository.getRecipeFromUrl(query);
+    return result;
   }
 }

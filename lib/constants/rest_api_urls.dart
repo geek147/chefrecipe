@@ -1,11 +1,14 @@
+import 'package:chefrecipe/core/utils/env.dart';
 import 'package:dio/dio.dart';
 
 class RestApiUrls {
   RestApiUrls._();
 
-  static const String baseUrl = '';
-  static const String recipeApiServerKey = '';
-  static const String recipeUrl = 'https://api.edamam.com/api/recipes/v2';
+  static const String baseUrl = 'https://api.edamam.com/api/recipes/v2';
+
+  static String recipeUrl(String query) {
+    return "https://api.edamam.com/api/recipes/v2?type=public&q=$query&app_id=${Env.appId}&app_key=${Env.appKey}";
+  }
 
   static BaseOptions baseOptions = BaseOptions(
     baseUrl: baseUrl,

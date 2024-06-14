@@ -11,9 +11,9 @@ class RecipeRepositoryImpl implements RecipeRepository {
   const RecipeRepositoryImpl({required this.recipeDatasource});
 
   @override
-  Future<Either<Failure, RecipeModel>> getRecipeFromUrl() async {
+  Future<Either<Failure, RecipeModel?>> getRecipeFromUrl(String query) async {
     try {
-      final result = await recipeDatasource.getRecipeFromApi();
+      final result = await recipeDatasource.getRecipeFromApi(query);
       return right(result);
     } on ServerException catch (_) {
       return left(ServerFailure());

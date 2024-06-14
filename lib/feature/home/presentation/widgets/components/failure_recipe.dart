@@ -1,6 +1,6 @@
 import 'package:chefrecipe/core/failures/failures.dart';
 import 'package:chefrecipe/feature/home/presentation/notifier/recipe_notifier.dart';
-import 'package:chefrecipe/feature/home/presentation/widgets/components/buttons/refresh_button.dart';
+import 'package:chefrecipe/feature/home/presentation/widgets/components/refresh_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -28,7 +28,7 @@ class FailureRecipe extends StatelessWidget {
           ),
           RefreshMoreButton(
             onTap: () {
-              ref.read(recipeProvider.notifier).getRecipe();
+              ref.read(recipeProvider.notifier).getRecipe("Chicken");
             },
           ),
         ],

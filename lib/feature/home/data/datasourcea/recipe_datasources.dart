@@ -4,7 +4,7 @@ import 'package:chefrecipe/feature/home/data/models/recipe_model.dart';
 import 'package:dio/dio.dart';
 
 abstract class RecipeDatasource {
-  Future<RecipeModel> getRecipeFromApi();
+  Future<RecipeModel?> getRecipeFromApi(String query);
 }
 
 class RecipeDatasourceImpl implements RecipeDatasource {
@@ -13,17 +13,20 @@ class RecipeDatasourceImpl implements RecipeDatasource {
   RecipeDatasourceImpl({required this.dio});
 
   @override
-  Future<RecipeModel> getRecipeFromApi() async {
+  Future<RecipeModel?> getRecipeFromApi(String query) async {
     try {
       Response response;
-      response = await dio.get(RestApiUrls.recipeUrl);
+      response = await dio.get(RestApiUrls.recipeUrl(query));
       if (response.statusCode != 200) {
         throw ExceptionUtils.dioStatusCodeErrorHandle(response.statusCode);
       } else {
-        return RecipeModel.fromJson(response.data);
+        final model = RecipeModel.fromMap(response.data);
+        return model;
       }
     } on DioException catch (e, stacktrace) {
       throw ExceptionUtils.dioErrorHandle(e, stacktrace);
+    } catch (e) {
+      return null;
     }
   }
 }

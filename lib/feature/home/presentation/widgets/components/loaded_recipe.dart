@@ -1,6 +1,6 @@
 import 'package:chefrecipe/feature/home/data/models/recipe_model.dart';
 import 'package:chefrecipe/feature/home/presentation/notifier/recipe_notifier.dart';
-import 'package:chefrecipe/feature/home/presentation/widgets/components/buttons/load_more_button.dart';
+import 'package:chefrecipe/feature/home/presentation/widgets/components/load_more_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -28,7 +28,7 @@ class LoadedRecipe extends StatelessWidget {
           ),
           LoadMoreButton(
             onTap: () {
-              ref.read(recipeProvider.notifier).getRecipe();
+              ref.read(recipeProvider.notifier).getRecipe("Chicken");
             },
           ),
         ],

@@ -1,4 +1,3 @@
-import 'package:chefrecipe/feature/home/data/models/recipe_model.dart';
 import 'package:chefrecipe/feature/home/domain/usecases/recipe_usecases.dart';
 import 'package:chefrecipe/feature/home/presentation/notifier/recipe_state.dart';
 import 'package:chefrecipe/injection.dart';
@@ -6,13 +5,15 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class RecipeNotifier extends StateNotifier<RecipeState> {
   RecipeNotifier({required this.recipeUseCases})
-      : super(RecipeState(recipeModel: RecipeModel()));
+      : super(const RecipeState(recipeModel: null)) {
+    getRecipe("Chicken");
+  }
   final RecipeUseCases recipeUseCases;
 
-  getRecipe() async {
+  getRecipe(String query) async {
     state = state.copyWith(isLoading: true);
 
-    final result = await recipeUseCases.getRecipeFromUrl();
+    final result = await recipeUseCases.getRecipeFromUrl(query);
     result.fold((failure) {
       state = state.copyWith(failure: failure, isLoading: false);
     }, (success) {

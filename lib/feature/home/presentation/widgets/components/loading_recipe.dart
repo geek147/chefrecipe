@@ -1,56 +1,32 @@
-import 'package:chefrecipe/feature/home/presentation/widgets/components/skeleton/skeleton.dart';
 import 'package:flutter/material.dart';
+import 'package:shimmer/shimmer.dart';
 
 class LoadingRecipe extends StatelessWidget {
   const LoadingRecipe({super.key});
 
   @override
   Widget build(BuildContext context) {
-    final size = MediaQuery.of(context).size;
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              SkeletonWidget(
-                width: size.width,
-                height: 16,
-              ),
-              const SizedBox(
-                height: 8,
-              ),
-              SkeletonWidget(
-                width: size.width * 0.70,
-                height: 16,
-              ),
-              const SizedBox(
-                height: 8,
-              ),
-              SkeletonWidget(
-                width: size.width * 0.80,
-                height: 16,
-              ),
-              const SizedBox(
-                height: 8,
-              ),
-              SkeletonWidget(
-                width: size.width * 0.76,
-                height: 16,
-              ),
-            ],
-          ),
-          const SkeletonWidget(
-            width: 54,
-            height: 54,
-            borderRadius: 48,
-          ),
-        ],
+    return GridView.builder(
+      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+        crossAxisCount: 2, // number of items in each row
+        mainAxisSpacing: 8.0, // spacing between rows
+        crossAxisSpacing: 8.0, // spacing between columns
       ),
+      padding: const EdgeInsets.all(8.0),
+      itemCount: 4, //
+      itemBuilder: (context, index) {
+        return Shimmer.fromColors(
+          baseColor: Colors.grey[300]!,
+          highlightColor: Colors.grey[100]!,
+          child: Container(
+            decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.circular(10),
+            ),
+            margin: const EdgeInsets.symmetric(vertical: 8.0),
+          ),
+        );
+      },
     );
   }
 }
