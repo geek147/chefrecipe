@@ -44,3 +44,4 @@ app.*.map.json
 
 .env
 env.g.dart
+secret.env
