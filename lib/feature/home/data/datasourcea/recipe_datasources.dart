@@ -17,6 +17,7 @@ class RecipeDatasourceImpl implements RecipeDatasource {
     try {
       Response response;
       response = await dio.get(RestApiUrls.recipeUrl(query));
+      print(RestApiUrls.recipeUrl(query));
       if (response.statusCode != 200) {
         throw ExceptionUtils.dioStatusCodeErrorHandle(response.statusCode);
       } else {

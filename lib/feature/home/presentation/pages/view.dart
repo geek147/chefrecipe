@@ -2,6 +2,7 @@ import 'package:chefrecipe/core/failures/failures.dart';
 import 'package:chefrecipe/feature/home/data/models/recipe_model.dart';
 import 'package:chefrecipe/feature/home/presentation/notifier/recipe_notifier.dart';
 import 'package:chefrecipe/feature/home/presentation/widgets/components/failure_recipe.dart';
+import 'package:chefrecipe/feature/home/presentation/widgets/components/list_category.dart';
 import 'package:chefrecipe/feature/home/presentation/widgets/components/loaded_recipe.dart';
 import 'package:chefrecipe/feature/home/presentation/widgets/components/loading_recipe.dart';
 import 'package:flutter/material.dart';
@@ -39,12 +40,6 @@ class HomeView extends ConsumerWidget {
             ],
           ),
         ),
-        actions: const [
-          Padding(
-            padding: EdgeInsets.all(8.0),
-            child: Icon(Icons.settings, color: Colors.grey),
-          ),
-        ],
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -61,18 +56,7 @@ class HomeView extends ConsumerWidget {
               ),
             ),
             const SizedBox(height: 20),
-            const Row(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
-              children: [
-                CategoryButton(
-                    label: 'Chicken', imagePath: 'assets/images/no_image.png'),
-                CategoryButton(
-                    label: 'Burger', imagePath: 'assets/images/no_image.png'),
-                CategoryButton(
-                    label: 'Mushroom', imagePath: 'assets/images/no_image.png'),
-              ],
-            ),
-            const SizedBox(height: 20),
+            const ListCategory(),
             const Text(
               "Today's Special Dishes",
               style: TextStyle(
@@ -106,40 +90,6 @@ class HomeView extends ConsumerWidget {
           ],
         ),
       ),
-    );
-  }
-}
-
-class CategoryButton extends StatelessWidget {
-  final String label;
-  final String imagePath;
-
-  const CategoryButton({
-    super.key,
-    required this.label,
-    required this.imagePath,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return Column(
-      children: [
-        ClipRRect(
-          borderRadius: BorderRadius.circular(10),
-          child: Image.asset(
-            imagePath,
-            width: 100,
-            height: 100,
-            fit: BoxFit.cover,
-          ),
-        ),
-        const SizedBox(height: 5),
-        Text(
-          label,
-          style: const TextStyle(
-              fontWeight: FontWeight.bold, fontFamily: 'Raleway'),
-        ),
-      ],
     );
   }
 }
