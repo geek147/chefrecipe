@@ -1,9 +1,12 @@
 import 'dart:io';
 
-import 'package:flutter/cupertino.dart';
+import 'package:chefrecipe/core/failures/failures.dart';
+import 'package:chefrecipe/feature/home/presentation/widgets/components/failure_recipe.dart';
+import 'package:chefrecipe/feature/search/presentation/notifier/search_notifier.dart';
+import 'package:chefrecipe/feature/search/presentation/widget/loaded_search.dart';
+import 'package:chefrecipe/feature/search/presentation/widget/loading_search.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_gemini/flutter_gemini.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:image_picker/image_picker.dart';
 
@@ -17,8 +20,7 @@ class SearchImageView extends ConsumerStatefulWidget {
 
 class _SearchImageViewState extends ConsumerState<SearchImageView> {
   File? image;
-  final gemini = Gemini.instance;
-  String? recipe;
+  //final gemini = Gemini.instance;
 
   Future pickImage(ImageSource source) async {
     try {
@@ -63,20 +65,12 @@ class _SearchImageViewState extends ConsumerState<SearchImageView> {
     );
   }
 
-  Future askAiImage() async {
-    gemini
-        .textAndImage(
-            text:
-                "You are a chef.Identify the dish in this image, describe it, and suggest a recipe for this dish by specifying the ingredients and the instructions on how to make it. Explain step by step with detail.",
-            images: [image!.readAsBytesSync()])
-        .then((value) => setState(() {
-              recipe = value?.content?.parts?.last.text ?? '';
-            }))
-        .catchError((e) => print('textAndImageInput $e'));
-  }
-
   @override
   Widget build(BuildContext context) {
+    final searchNotifier = ref.read(searchProvider.notifier);
+    String? recipe = ref.watch(searchProvider).resultImage;
+    Failure? failure = ref.watch(searchProvider).failure;
+    bool isLoading = ref.watch(searchProvider).isLoading;
     return Column(
       mainAxisAlignment: MainAxisAlignment.start,
       children: [
@@ -118,7 +112,9 @@ class _SearchImageViewState extends ConsumerState<SearchImageView> {
         MaterialButton(
           color: Colors.blue,
           onPressed: () {
-            askAiImage();
+            if (image != null) {
+              searchNotifier.searchRecipeByImage([image!.readAsBytesSync()]);
+            }
           },
           child: const Text("Ask Ai for Recipe",
               style: TextStyle(
@@ -126,22 +122,31 @@ class _SearchImageViewState extends ConsumerState<SearchImageView> {
         ),
         const SizedBox(height: 5),
         Expanded(
-          child: SingleChildScrollView(
-            child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 20),
-              child: Column(
-                children: [
-                  Text(
-                    recipe ?? "No recipe found",
-                    style: const TextStyle(
-                        fontSize: 16.0,
-                        color: Colors.black87,
-                        fontFamily: 'Raleway'),
-                    textAlign: TextAlign.justify,
-                  ),
-                ],
-              ),
-            ),
+          child: Builder(
+            builder: (context) {
+              if (isLoading) {
+                return const LoadingSearch();
+              }
+              if (recipe != null) {
+                return LoadedSearch(
+                  recipe: recipe,
+                  ref: ref,
+                );
+              } else if (failure != null) {
+                return FailureRecipe(
+                  failure: failure,
+                  ref: ref,
+                );
+              } else {
+                return const Text(
+                  "No Image Selected",
+                  style: TextStyle(
+                      fontSize: 18,
+                      fontWeight: FontWeight.bold,
+                      fontFamily: 'Raleway'),
+                );
+              }
+            },
           ),
         )
       ],

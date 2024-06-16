@@ -30,9 +30,7 @@ migrate_working_dir/
 .pub-cache/
 .pub/
 /build/
-.env
-env.g.dart
-secret.env
+
 # Symbolication related
 app.*.symbols
 
@@ -43,3 +41,6 @@ app.*.map.json
 /android/app/debug
 /android/app/profile
 /android/app/release
+
+.env
+env.g.dart

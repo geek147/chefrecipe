@@ -17,6 +17,8 @@ final _privateConstructorUsedError = UnsupportedError(
 /// @nodoc
 mixin _$SearchState {
   bool get isLoading => throw _privateConstructorUsedError;
+  String? get resultImage => throw _privateConstructorUsedError;
+  String? get resultIngredients => throw _privateConstructorUsedError;
   Failure? get failure => throw _privateConstructorUsedError;
 
   @JsonKey(ignore: true)
@@ -30,7 +32,11 @@ abstract class $SearchStateCopyWith<$Res> {
           SearchState value, $Res Function(SearchState) then) =
       _$SearchStateCopyWithImpl<$Res, SearchState>;
   @useResult
-  $Res call({bool isLoading, Failure? failure});
+  $Res call(
+      {bool isLoading,
+      String? resultImage,
+      String? resultIngredients,
+      Failure? failure});
 }
 
 /// @nodoc
@@ -47,6 +53,8 @@ class _$SearchStateCopyWithImpl<$Res, $Val extends SearchState>
   @override
   $Res call({
     Object? isLoading = null,
+    Object? resultImage = freezed,
+    Object? resultIngredients = freezed,
     Object? failure = freezed,
   }) {
     return _then(_value.copyWith(
@@ -54,6 +62,14 @@ class _$SearchStateCopyWithImpl<$Res, $Val extends SearchState>
           ? _value.isLoading
           : isLoading // ignore: cast_nullable_to_non_nullable
               as bool,
+      resultImage: freezed == resultImage
+          ? _value.resultImage
+          : resultImage // ignore: cast_nullable_to_non_nullable
+              as String?,
+      resultIngredients: freezed == resultIngredients
+          ? _value.resultIngredients
+          : resultIngredients // ignore: cast_nullable_to_non_nullable
+              as String?,
       failure: freezed == failure
           ? _value.failure
           : failure // ignore: cast_nullable_to_non_nullable
@@ -70,7 +86,11 @@ abstract class _$$SearchStateImplCopyWith<$Res>
       __$$SearchStateImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({bool isLoading, Failure? failure});
+  $Res call(
+      {bool isLoading,
+      String? resultImage,
+      String? resultIngredients,
+      Failure? failure});
 }
 
 /// @nodoc
@@ -85,6 +105,8 @@ class __$$SearchStateImplCopyWithImpl<$Res>
   @override
   $Res call({
     Object? isLoading = null,
+    Object? resultImage = freezed,
+    Object? resultIngredients = freezed,
     Object? failure = freezed,
   }) {
     return _then(_$SearchStateImpl(
@@ -92,6 +114,14 @@ class __$$SearchStateImplCopyWithImpl<$Res>
           ? _value.isLoading
           : isLoading // ignore: cast_nullable_to_non_nullable
               as bool,
+      resultImage: freezed == resultImage
+          ? _value.resultImage
+          : resultImage // ignore: cast_nullable_to_non_nullable
+              as String?,
+      resultIngredients: freezed == resultIngredients
+          ? _value.resultIngredients
+          : resultIngredients // ignore: cast_nullable_to_non_nullable
+              as String?,
       failure: freezed == failure
           ? _value.failure
           : failure // ignore: cast_nullable_to_non_nullable
@@ -103,17 +133,26 @@ class __$$SearchStateImplCopyWithImpl<$Res>
 /// @nodoc
 
 class _$SearchStateImpl extends _SearchState {
-  const _$SearchStateImpl({this.isLoading = true, this.failure}) : super._();
+  const _$SearchStateImpl(
+      {this.isLoading = false,
+      this.resultImage,
+      this.resultIngredients,
+      this.failure})
+      : super._();
 
   @override
   @JsonKey()
   final bool isLoading;
   @override
+  final String? resultImage;
+  @override
+  final String? resultIngredients;
+  @override
   final Failure? failure;
 
   @override
   String toString() {
-    return 'SearchState(isLoading: $isLoading, failure: $failure)';
+    return 'SearchState(isLoading: $isLoading, resultImage: $resultImage, resultIngredients: $resultIngredients, failure: $failure)';
   }
 
   @override
@@ -123,11 +162,16 @@ class _$SearchStateImpl extends _SearchState {
             other is _$SearchStateImpl &&
             (identical(other.isLoading, isLoading) ||
                 other.isLoading == isLoading) &&
+            (identical(other.resultImage, resultImage) ||
+                other.resultImage == resultImage) &&
+            (identical(other.resultIngredients, resultIngredients) ||
+                other.resultIngredients == resultIngredients) &&
             (identical(other.failure, failure) || other.failure == failure));
   }
 
   @override
-  int get hashCode => Object.hash(runtimeType, isLoading, failure);
+  int get hashCode => Object.hash(
+      runtimeType, isLoading, resultImage, resultIngredients, failure);
 
   @JsonKey(ignore: true)
   @override
@@ -137,12 +181,19 @@ class _$SearchStateImpl extends _SearchState {
 }
 
 abstract class _SearchState extends SearchState {
-  const factory _SearchState({final bool isLoading, final Failure? failure}) =
-      _$SearchStateImpl;
+  const factory _SearchState(
+      {final bool isLoading,
+      final String? resultImage,
+      final String? resultIngredients,
+      final Failure? failure}) = _$SearchStateImpl;
   const _SearchState._() : super._();
 
   @override
   bool get isLoading;
+  @override
+  String? get resultImage;
+  @override
+  String? get resultIngredients;
   @override
   Failure? get failure;
   @override

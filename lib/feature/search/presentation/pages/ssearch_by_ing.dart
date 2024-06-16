@@ -1,7 +1,11 @@
 import 'dart:math';
 
+import 'package:chefrecipe/core/failures/failures.dart';
+import 'package:chefrecipe/feature/home/presentation/widgets/components/failure_recipe.dart';
+import 'package:chefrecipe/feature/search/presentation/notifier/search_notifier.dart';
+import 'package:chefrecipe/feature/search/presentation/widget/loaded_search.dart';
+import 'package:chefrecipe/feature/search/presentation/widget/loading_search.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_gemini/flutter_gemini.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class SearchIngredientsView extends ConsumerStatefulWidget {
@@ -16,8 +20,8 @@ class _SearchIngredientsViewState extends ConsumerState<SearchIngredientsView> {
   late TextEditingController controller;
   late FocusNode focusNode;
   final List<String> inputTags = [];
-  String response = "";
-  final gemini = Gemini.instance;
+  // String response = "";
+  // final gemini = Gemini.instance;
 
   @override
   void initState() {
@@ -26,20 +30,24 @@ class _SearchIngredientsViewState extends ConsumerState<SearchIngredientsView> {
     super.initState();
   }
 
-  Future askAi() async {
-    gemini
-        .text(
-            "You are a chef. Identify the ingredients and suggest a recipe from this ingredients. Give name to the recipe and the instructions on how to make it. Explain step by step with detail.")
-        .then((value) => setState(() {
-              response = value?.output ?? "No response";
-            }))
+  // Future askAi() async {
+  //   gemini
+  //       .text(
+  //           "You are a chef. Identify the ingredients and suggest a recipe from this ingredients. Give name to the recipe and the instructions on how to make it. Explain step by step with detail.")
+  //       .then((value) => setState(() {
+  //             response = value?.output ?? "No response";
+  //           }))
 
-        /// or value?.content?.parts?.last.text
-        .catchError((e) => print(e));
-  }
+  //       /// or value?.content?.parts?.last.text
+  //       .catchError((e) => print(e));
+  // }
 
   @override
   Widget build(BuildContext context) {
+    final searchNotifier = ref.read(searchProvider.notifier);
+    String? recipeIng = ref.watch(searchProvider).resultIngredients;
+    Failure? failure = ref.watch(searchProvider).failure;
+    bool isLoading = ref.watch(searchProvider).isLoading;
     return Scaffold(
       body: SafeArea(
         child: Padding(
@@ -49,7 +57,10 @@ class _SearchIngredientsViewState extends ConsumerState<SearchIngredientsView> {
             child: Column(children: [
               const Text(
                 "Find the best recipe for this cooking",
-                style: TextStyle(fontSize: 35, fontWeight: FontWeight.bold),
+                style: TextStyle(
+                    fontSize: 24,
+                    fontWeight: FontWeight.bold,
+                    fontFamily: 'Raleway'),
               ),
               const SizedBox(
                 height: 20,
@@ -68,7 +79,6 @@ class _SearchIngredientsViewState extends ConsumerState<SearchIngredientsView> {
                           focusNode.requestFocus();
                         });
                         controller.clear();
-                        print(inputTags);
                       },
                       decoration: const InputDecoration(
                         focusedBorder: OutlineInputBorder(
@@ -79,8 +89,9 @@ class _SearchIngredientsViewState extends ConsumerState<SearchIngredientsView> {
                         enabledBorder:
                             OutlineInputBorder(borderSide: BorderSide()),
                         labelText: "Enter the ingredients you have",
-                        labelStyle:
-                            TextStyle(color: Color.fromARGB(255, 58, 123, 92)),
+                        labelStyle: TextStyle(
+                            color: Color.fromARGB(255, 58, 123, 92),
+                            fontFamily: 'Raleway'),
                       ),
                     ),
                   ),
@@ -95,7 +106,6 @@ class _SearchIngredientsViewState extends ConsumerState<SearchIngredientsView> {
                             focusNode.requestFocus();
                           });
                           controller.clear();
-                          print(inputTags);
                         },
                         icon: const Icon(
                           Icons.add,
@@ -120,13 +130,11 @@ class _SearchIngredientsViewState extends ConsumerState<SearchIngredientsView> {
                                   .withOpacity(0.1),
                           shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(5.5)),
-                          label: Text(
-                            inputTags[i],
-                          ),
+                          label: Text(inputTags[i],
+                              style: const TextStyle(fontFamily: 'Raleway')),
                           onDeleted: () {
                             setState(() {
                               inputTags.remove(inputTags[i]);
-                              print(inputTags);
                             });
                           },
                           deleteIcon: const Icon(
@@ -139,16 +147,33 @@ class _SearchIngredientsViewState extends ConsumerState<SearchIngredientsView> {
                 ),
               ),
               Expanded(
-                  child: SizedBox(
-                child: Center(
-                  child: SingleChildScrollView(
-                    child: Text(
-                      response,
-                      style: const TextStyle(fontSize: 20),
-                    ),
-                  ),
+                child: Builder(
+                  builder: (context) {
+                    if (isLoading) {
+                      return const LoadingSearch();
+                    }
+                    if (recipeIng != null) {
+                      return LoadedSearch(
+                        recipe: recipeIng,
+                        ref: ref,
+                      );
+                    } else if (failure != null) {
+                      return FailureRecipe(
+                        failure: failure,
+                        ref: ref,
+                      );
+                    } else {
+                      return const Text(
+                        "No recipe yet",
+                        style: TextStyle(
+                            fontSize: 18,
+                            fontWeight: FontWeight.bold,
+                            fontFamily: 'Raleway'),
+                      );
+                    }
+                  },
                 ),
-              )),
+              ),
               Align(
                 alignment: Alignment.bottomCenter,
                 child: TextButton(
@@ -159,10 +184,7 @@ class _SearchIngredientsViewState extends ConsumerState<SearchIngredientsView> {
                   ),
                   child: const Text('Get recipe'),
                   onPressed: () async {
-                    setState(
-                      () => response = "Thinking",
-                    );
-                    askAi();
+                    searchNotifier.searchRecipeByIngredients(inputTags);
                   },
                 ),
               )
