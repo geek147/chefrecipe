@@ -32,6 +32,7 @@ migrate_working_dir/
 /build/
 .env
 env.g.dart
+secret.env
 # Symbolication related
 app.*.symbols
 
